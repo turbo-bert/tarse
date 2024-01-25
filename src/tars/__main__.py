@@ -52,10 +52,19 @@ if os.path.isfile("play.js"):
             if play_part[1] == "sleep":###ntcommand
                 time.sleep(float(play_part[2]))
         else:
+            lel = None # list of elements
             if play_part[0].startswith("id:"):
-                pass
+                target_id = play_part[0][3:]
+                lel = driver.find_elements(BY.ID, target_id)
             else:
-                pass
+                lel = driver.find_elements(BY.XPATH, play_part[0])
+            
+            if play_part[1] == "type": ###tcommand
+                lel[0].send_keys(play_part[2])
+
+            if play_part[1] == "click": ###tcommand
+                lel[0].click()
+
 # driver.save_screenshot("test.png")
 driver.quit()
 logging.info("finished")
