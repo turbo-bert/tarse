@@ -6,6 +6,7 @@ import json
 import time
 import traceback
 import subprocess
+import datetime
 
 from selenium.webdriver.firefox.options import Options as FFOptions
 from selenium.webdriver.chrome.options import Options as CHOptions
@@ -37,7 +38,24 @@ opts = selenium.webdriver.FirefoxOptions()
 
 driver = webdriver.Firefox(options=opts)
 
-driver.get("https://www.google.de")
-driver.save_screenshot("test.png")
+
+logbasedir = os.path.join("log", "firefox-local", datetime.datetime.today().strftime("%Y-%m-%d-%H%M"))
+os.makedirs(logbasedir, exist_ok=False)
+
+
+if os.path.isfile("play.js"):
+    play = json.loads(open("play.js", "r").read())
+    for play_part in play:
+        if play_part[0] == None:
+            if play_part[1] == "get": ###ntcommand
+                driver.get(play_part[2])
+            if play_part[1] == "sleep":###ntcommand
+                time.sleep(float(play_part[2]))
+        else:
+            if play_part[0].startswith("id:"):
+                pass
+            else:
+                pass
+# driver.save_screenshot("test.png")
 driver.quit()
 logging.info("finished")
