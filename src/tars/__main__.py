@@ -43,6 +43,13 @@ logbasedir = os.path.join("log", "firefox-local", datetime.datetime.today().strf
 os.makedirs(logbasedir, exist_ok=False)
 
 
+
+def break_handler(data):
+    if data == "?":
+        print("")
+        print("HELP")
+        print("")
+
 if os.path.isfile("play.js"):
     play = json.loads(open("play.js", "r").read())
     for play_part in play:
@@ -51,6 +58,15 @@ if os.path.isfile("play.js"):
                 driver.get(play_part[2])
             if play_part[1] == "sleep":###ntcommand
                 time.sleep(float(play_part[2]))
+            if play_part[1] == "halt":###ntcommand
+                while True:
+                    print("*** DEBUG HALT ***")
+                    break_input = input("Press RETURN (no input) to continue (leave DEBUG HALT)... $ ")
+                    if break_input == "":
+                        break
+                    else:
+                        break_handler(break_input)
+
         else:
             lel = None # list of elements
             if play_part[0].startswith("id:"):
@@ -68,3 +84,7 @@ if os.path.isfile("play.js"):
 # driver.save_screenshot("test.png")
 driver.quit()
 logging.info("finished")
+
+
+
+        
