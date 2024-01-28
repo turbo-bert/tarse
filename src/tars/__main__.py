@@ -31,8 +31,8 @@ logging.Formatter.converter = time.gmtime
 
 
 opts = FFOptions()
-#opts.add_argument("-devtools")
-opts.add_argument("-jsconsole")
+opts.add_argument("-devtools")
+#opts.add_argument("-jsconsole")
 
 
 
