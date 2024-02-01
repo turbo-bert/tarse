@@ -49,6 +49,12 @@ logbasedir = os.path.join("log", driver_mode, datetime.datetime.today().strftime
 os.makedirs(logbasedir, exist_ok=False)
 
 
+def content_provider_facade(src, provider_name=""):
+    if provider_name == "":
+        return src
+    if provider_name == "bash":
+        return subprocess.check_output("""/bin/bash -c '%s'""" % content, shell=True, universal_newlines=True)
+
 
 def break_handler(data):
     if data == "?":
@@ -63,6 +69,7 @@ if os.path.isfile("play.js"):
     play = json.loads(open("play.js", "r").read())
     play_part_i = 0
     for play_part in play:
+        ppl = len(play_part) # play part length
         play_part_i+=1
         if play_part[0] == None:
             if play_part[1] == "get": ###ntcommand
@@ -84,10 +91,18 @@ if os.path.isfile("play.js"):
                 lel = driver.find_elements(BY.ID, target_id)
             else:
                 lel = driver.find_elements(BY.XPATH, play_part[0])
+
             if play_part[1] == "type": ###tcommand
-                lel[0].send_keys(play_part[2])
+                content = play_part[2]
+                if ppl > 3:
+                    content = content_provider_facade(content, play_part[3])
+                lel[0].send_keys(content)
+
             if play_part[1] == "click": ###tcommand
                 lel[0].click()
+
+            if play_part[1] == "clear": ###tcommand
+                lel[0].clear()
 
 # driver.save_screenshot("test.png")
 driver.quit()

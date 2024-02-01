@@ -3,7 +3,7 @@
 
 export PYTHONPATH=../../src:$PYTHONPATH
 
-#rm -fr log
+rm -fr log
 #sleep 5
 
 
