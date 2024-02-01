@@ -29,6 +29,8 @@ logging.basicConfig(level=logging.INFO, format=FORMAT)
 logging.Formatter.converter = time.gmtime
 
 
+default_wait = 30
+
 
 opts = FFOptions()
 opts.add_argument("-devtools")
@@ -88,9 +90,11 @@ if os.path.isfile("play.js"):
             lel = None # list of elements
             if play_part[0].startswith("id:"):
                 target_id = play_part[0][3:]
-                lel = driver.find_elements(BY.ID, target_id)
+                lel = WDW(driver=driver, timeout=default_wait).until(lambda x: x.find_elements(BY.ID, target_id))
+                #lel = driver.find_elements(BY.ID, target_id)
             else:
-                lel = driver.find_elements(BY.XPATH, play_part[0])
+                lel = WDW(driver=driver, timeout=default_wait).until(lambda x: x.find_elements(BY.XPATH, play_part[0]))
+                #lel = driver.find_elements(BY.XPATH, play_part[0])
 
             if play_part[1] == "type": ###tcommand
                 content = play_part[2]
