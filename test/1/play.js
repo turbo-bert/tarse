@@ -1,5 +1,5 @@
 [
-    [null, "get", "http://127.0.0.1"],
+    [null, "get", "$SITE", "env"],
     ["//input[@name=\"title\"]", "clear"],
     ["//input[@name=\"title\"]", "type", "echo -n $HOME", "bash"],
     [null, "halt"]

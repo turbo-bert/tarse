@@ -76,6 +76,13 @@ def break_handler(data):
     if data == "href":
         print("href=%s" % driver.execute_script('return location.href;'))
 
+# src=["b", "n"], l=2, idx=1
+def expand_column(src, idx):
+    content = src[idx]
+    if idx+1 <= len(src)-1:
+        content = content_provider_facade(content, src[idx+1])
+    return content
+
 
 envdata = {}
 
@@ -99,7 +106,8 @@ if os.path.isfile("play.js"):
         play_part_i+=1
         if play_part[0] == None:
             if play_part[1] == "get": ###ntcommand
-                driver.get(play_part[2])
+                url_for_get = expand_column(play_part, 2)
+                driver.get(url_for_get)
             if play_part[1] == "sleep":###ntcommand
                 time.sleep(float(play_part[2]))
             if play_part[1] == "halt":###ntcommand
@@ -121,9 +129,10 @@ if os.path.isfile("play.js"):
                 #lel = driver.find_elements(BY.XPATH, play_part[0])
 
             if play_part[1] == "type": ###tcommand
-                content = play_part[2]
-                if ppl > 3:
-                    content = content_provider_facade(content, play_part[3])
+                content = expand_column(play_part, 2)
+                # content = play_part[2]
+                # if ppl > 3:
+                #     content = content_provider_facade(content, play_part[3])
                 lel[0].send_keys(content)
 
             if play_part[1] == "click": ###tcommand
