@@ -52,10 +52,20 @@ os.makedirs(logbasedir, exist_ok=False)
 
 
 def content_provider_facade(src, provider_name=""):
+    if "+" in provider_name:
+        provider_chain = provider_name.split("+")
+        for ci in provider_chain:
+            src = content_provider_facade(src, ci)
+        return src
     if provider_name == "":
         return src
     if provider_name == "bash":
         return subprocess.check_output("""/bin/bash -c '%s'""" % content, shell=True, universal_newlines=True)
+    if provider_name == "env":
+        for k in envdata.keys():
+            kstring = "$" + k
+            src = src.replace(kstring, envdata[k])
+        return src
 
 
 def break_handler(data):
@@ -67,7 +77,21 @@ def break_handler(data):
         print("href=%s" % driver.execute_script('return location.href;'))
 
 
+envdata = {}
+
 if os.path.isfile("play.js"):
+
+    if os.path.isfile("play.env"):
+        envlines = [l.strip() for l in open("play.env", "r").read().strip().split() if l.strip() != ""]
+        for l in envlines:
+            epos=l.find("=")
+            k = l[0:epos]
+            v = l[epos+1:]
+            envdata[k]=v
+
+    logging.info("env is " + str(envdata))
+
+
     play = json.loads(open("play.js", "r").read())
     play_part_i = 0
     for play_part in play:
