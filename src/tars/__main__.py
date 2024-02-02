@@ -78,6 +78,7 @@ def break_handler(data):
     if data == "q":
         print("QUIT")
         driver.quit()
+        sys.exit(0)
 
 # src=["b", "n"], l=2, idx=1
 def expand_column(src, idx):
