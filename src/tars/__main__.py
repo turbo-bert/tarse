@@ -118,6 +118,15 @@ if os.path.isfile("play.js"):
                         break
                     else:
                         break_handler(break_input)
+            if play_part[1] == "click_any_const":###ntcommand
+                any_consts = [x for x in play_part[2:]]
+                constructed_xpath = "//*[" + " or ".join(["text()=\"%s\"" % x for x in any_consts]) + "]"
+                any_lel = WDW(driver=driver, timeout=default_wait).until(lambda x: x.find_elements(BY.ID, target_id))
+                if any_lel is None or len(any_lel) == 0:
+                    raise Exception("could not click one of %s" % str(any_consts))
+                any_lel[0].click()
+
+
         else:
             lel = None # list of elements
             if play_part[0].startswith("id:"):
