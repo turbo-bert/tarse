@@ -60,7 +60,7 @@ def content_provider_facade(src, provider_name=""):
     if provider_name == "":
         return src
     if provider_name == "bash":
-        return subprocess.check_output("""/bin/bash -c '%s'""" % content, shell=True, universal_newlines=True)
+        return subprocess.check_output("""/bin/bash -c '%s'""" % src, shell=True, universal_newlines=True)
     if provider_name == "env":
         for k in envdata.keys():
             kstring = "$" + k
