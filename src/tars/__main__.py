@@ -75,6 +75,9 @@ def break_handler(data):
         print("")
     if data == "href":
         print("href=%s" % driver.execute_script('return location.href;'))
+    if data == "q":
+        print("QUIT")
+        driver.quit()
 
 # src=["b", "n"], l=2, idx=1
 def expand_column(src, idx):
