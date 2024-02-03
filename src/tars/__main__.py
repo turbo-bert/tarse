@@ -129,6 +129,8 @@ if os.path.isfile("play.js"):
                 if any_lel is None or len(any_lel) == 0:
                     raise Exception("could not click one of %s" % str(any_consts))
                 any_lel[0].click()
+            if play_part[1] == "js64":###ntcommand
+                pass
 
 
         else:
